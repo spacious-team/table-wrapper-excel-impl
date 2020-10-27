@@ -20,7 +20,7 @@ Table tableN = tableFactory.create(reportPage, "Table N description", ...);
 Больше подробностей в документации [Table Wrapper API](https://github.com/spacious-team/table-wrapper-api).
 
 ### Как использовать в своем проекте
-Необходимо подключить репозиторий open source библиотек github [jitpack](https://jitpack.io/#spacious-team/table-wrapper-api),
+Необходимо подключить репозиторий open source библиотек github [jitpack](https://jitpack.io/#spacious-team/table-wrapper-excel-impl),
 например для Apache Maven проекта
 ```xml
 <repositories>
