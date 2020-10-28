@@ -9,7 +9,7 @@ Microsoft Office Excel (xls) и [Office Open XML](https://ru.wikipedia.org/wiki/
 ```java
 Workbook book = new XSSFWorkbook(Files.newInputStream(Path.get("1.xlsx")));
 ReportPage reportPage = new ExcelSheet(book.getSheetAt(0));
-TableFactory tableFactory = new ExcelTableFactory(reportPage);
+TableFactory tableFactory = new ExcelTableFactory();
 
 Table table1 = tableFactory.create(reportPage, "Table 1 description", ...);
 ...
