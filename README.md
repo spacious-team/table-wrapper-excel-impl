@@ -7,7 +7,7 @@ Microsoft Office Excel (xls) и [Office Open XML](https://ru.wikipedia.org/wiki/
 
 Пример создания фабрики таблиц
 ```java
-Workbook book = new XSSFWorkbook(Files.newInputStream(Path.get("1.xlsx")));
+Workbook book = new XSSFWorkbook(Files.newInputStream(Path.of("1.xlsx")));
 ReportPage reportPage = new ExcelSheet(book.getSheetAt(0));
 TableFactory tableFactory = new ExcelTableFactory();
 
