@@ -25,6 +25,14 @@ Table tableN = tableFactory.create(reportPage, "Table N description", ...);
 ```xml
 <repositories>
     <repository>
+        <id>central</id>
+        <name>Central Repository</name>
+        <url>https://repo.maven.apache.org/maven2</url>
+        <snapshots>
+            <enabled>false</enabled>
+        </snapshots>
+    </repository>
+    <repository>
         <id>jitpack.io</id>
         <url>https://jitpack.io</url>
     </repository>
