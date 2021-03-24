@@ -155,15 +155,22 @@ class ExcelTableHelper {
     /**
      * @throws RuntimeException if can't extract BigDecimal value
      */
-    static BigDecimal getCurrencyCellValue(Cell cell) {
+    static Double getDoubleCellValue(Cell cell) {
         Object cellValue = getCellValue(cell);
         double number;
         if (cellValue instanceof Number) {
-            number = ((Number) cellValue).doubleValue();
+            return ((Number) cellValue).doubleValue();
         } else {
-            number = Double.parseDouble(spacePattern.matcher(cellValue.toString()).replaceAll(""));
+            return Double.parseDouble(spacePattern.matcher(cellValue.toString()).replaceAll(""));
         }
-        return (Math.abs(number - 0.01d) < 0) ? BigDecimal.ZERO : BigDecimal.valueOf(number);
+    }
+
+    /**
+     * @throws RuntimeException if can't extract BigDecimal value
+     */
+    static BigDecimal getBigDecimalCellValue(Cell cell) {
+        double number = getDoubleCellValue(cell);
+        return (number == 0) ? BigDecimal.ZERO : BigDecimal.valueOf(number);
     }
 
     /**

@@ -22,6 +22,12 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.Cell;
 import org.spacious_team.table_wrapper.api.TableCell;
+import org.spacious_team.table_wrapper.api.TableColumnDescription;
+import org.spacious_team.table_wrapper.api.TableRow;
+
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
 public class ExcelTableCell implements TableCell {
@@ -40,7 +46,37 @@ public class ExcelTableCell implements TableCell {
     }
 
     @Override
-    public String getStringCellValue() {
+    public int getIntValue() {
+        return (int) getLongValue();
+    }
+
+    @Override
+    public long getLongValue() {
+        return ExcelTableHelper.getLongCellValue(cell);
+    }
+
+    @Override
+    public Double getDoubleValue() {
+        return ExcelTableHelper.getDoubleCellValue(cell);
+    }
+
+    @Override
+    public BigDecimal getBigDecimalValue() {
+        return ExcelTableHelper.getBigDecimalCellValue(cell);
+    }
+
+    @Override
+    public String getStringValue() {
         return ExcelTableHelper.getStringCellValue(cell);
+    }
+
+    @Override
+    public Instant getInstantValue() {
+        return cell.getDateCellValue().toInstant();
+    }
+
+    @Override
+    public LocalDateTime getLocalDateTimeValue() {
+        return cell.getLocalDateTimeCellValue();
     }
 }
