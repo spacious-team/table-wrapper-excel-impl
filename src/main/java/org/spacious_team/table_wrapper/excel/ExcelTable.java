@@ -18,16 +18,22 @@
 
 package org.spacious_team.table_wrapper.excel;
 
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.ToString;
+import org.spacious_team.table_wrapper.api.AbstractReportPage;
 import org.spacious_team.table_wrapper.api.AbstractTable;
-import org.spacious_team.table_wrapper.api.ReportPage;
+import org.spacious_team.table_wrapper.api.CellDataAccessObject;
 import org.spacious_team.table_wrapper.api.TableCellRange;
 import org.spacious_team.table_wrapper.api.TableColumnDescription;
 
 @ToString(callSuper = true)
-public class ExcelTable extends AbstractTable {
+public class ExcelTable extends AbstractTable<ExcelTableRow> {
 
-    ExcelTable(ReportPage reportPage,
+    @Getter(AccessLevel.PROTECTED)
+    private final CellDataAccessObject<?, ExcelTableRow> cellDataAccessObject = ExcelCellDataAccessObject.INSTANCE;
+
+    ExcelTable(AbstractReportPage<ExcelTableRow> reportPage,
                String tableName,
                TableCellRange tableRange,
                Class<? extends TableColumnDescription> headerDescription,

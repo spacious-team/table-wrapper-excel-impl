@@ -5,15 +5,14 @@
 Предоставляет реализацию `Table Wrapper API` для удобного доступа к табличным данным, сохраненным в файлах формата
 Microsoft Office Excel (xls) и [Office Open XML](https://ru.wikipedia.org/wiki/Office_Open_XML) (xlsx).
 
-Пример создания фабрики таблиц
+Пример создания таблиц с первого листа файла `1.xlsx`
 ```java
 Workbook book = new XSSFWorkbook(Files.newInputStream(Path.of("1.xlsx")));
 ReportPage reportPage = new ExcelSheet(book.getSheetAt(0));
-TableFactory tableFactory = new ExcelTableFactory();
 
-Table table1 = tableFactory.create(reportPage, "Table 1 description", ...);
+Table table1 = reportPage.create("Table 1 description", ...);
 ...
-Table tableN = tableFactory.create(reportPage, "Table N description", ...);
+Table tableN = reportPage.create("Table N description", ...);
 ```
 Объекты `table`...`tableN` используются для удобного доступа к строкам и к значениям ячеек.
 

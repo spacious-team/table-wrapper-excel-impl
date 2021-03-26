@@ -22,14 +22,13 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.spacious_team.table_wrapper.api.ReportPage;
-import org.spacious_team.table_wrapper.api.ReportPageRow;
+import org.spacious_team.table_wrapper.api.AbstractReportPage;
 import org.spacious_team.table_wrapper.api.TableCellAddress;
 
 import java.util.function.BiPredicate;
 
 @RequiredArgsConstructor
-public class ExcelSheet implements ReportPage {
+public class ExcelSheet extends AbstractReportPage<ExcelTableRow> {
 
     @Getter
     private final Sheet sheet;
@@ -41,7 +40,7 @@ public class ExcelSheet implements ReportPage {
     }
 
     @Override
-    public ReportPageRow getRow(int i) {
+    public ExcelTableRow getRow(int i) {
         Row row = sheet.getRow(i);
         return (row == null) ? null : new ExcelTableRow(row);
     }

@@ -22,7 +22,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
-import org.spacious_team.table_wrapper.api.ReportPageRow;
+import org.spacious_team.table_wrapper.api.AbstractReportPageRow;
 import org.spacious_team.table_wrapper.api.TableCell;
 
 import java.util.Iterator;
@@ -31,7 +31,7 @@ import static org.spacious_team.table_wrapper.api.TableCellAddress.NOT_FOUND;
 
 
 @RequiredArgsConstructor
-public class ExcelTableRow extends ReportPageRow {
+public class ExcelTableRow extends AbstractReportPageRow {
 
     @Getter
     private final Row row;

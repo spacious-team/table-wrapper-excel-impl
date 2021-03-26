@@ -21,6 +21,8 @@ package org.spacious_team.table_wrapper.excel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.Cell;
+import org.spacious_team.table_wrapper.api.AbstractTableCell;
+import org.spacious_team.table_wrapper.api.CellDataAccessObject;
 import org.spacious_team.table_wrapper.api.TableCell;
 import org.spacious_team.table_wrapper.api.TableColumnDescription;
 import org.spacious_team.table_wrapper.api.TableRow;
@@ -29,54 +31,16 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDateTime;
 
-@RequiredArgsConstructor
-public class ExcelTableCell implements TableCell {
+import static org.spacious_team.table_wrapper.excel.ExcelCellDataAccessObject.INSTANCE;
 
-    @Getter
-    private final Cell cell;
+public class ExcelTableCell extends AbstractTableCell<Cell> {
+
+    public ExcelTableCell(Cell cell) {
+        super(cell, INSTANCE);
+    }
 
     @Override
     public int getColumnIndex() {
-        return cell.getColumnIndex();
-    }
-
-    @Override
-    public Object getValue() {
-        return ExcelTableHelper.getCellValue(cell);
-    }
-
-    @Override
-    public int getIntValue() {
-        return (int) getLongValue();
-    }
-
-    @Override
-    public long getLongValue() {
-        return ExcelTableHelper.getLongCellValue(cell);
-    }
-
-    @Override
-    public Double getDoubleValue() {
-        return ExcelTableHelper.getDoubleCellValue(cell);
-    }
-
-    @Override
-    public BigDecimal getBigDecimalValue() {
-        return ExcelTableHelper.getBigDecimalCellValue(cell);
-    }
-
-    @Override
-    public String getStringValue() {
-        return ExcelTableHelper.getStringCellValue(cell);
-    }
-
-    @Override
-    public Instant getInstantValue() {
-        return cell.getDateCellValue().toInstant();
-    }
-
-    @Override
-    public LocalDateTime getLocalDateTimeValue() {
-        return cell.getLocalDateTimeCellValue();
+        return getCell().getColumnIndex();
     }
 }
