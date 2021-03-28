@@ -61,7 +61,7 @@ public class ExcelTableFactory extends AbstractTableFactory<ExcelSheet> {
                 getNoNameTableRange(reportPage, firstLineText, headersRowCount),
                 headerDescription,
                 headersRowCount);
-        table.setLastTableRowContainsTotalData(true);
+        table.setLastTableRowContainsTotalData(false);
         return table;
     }
 }
