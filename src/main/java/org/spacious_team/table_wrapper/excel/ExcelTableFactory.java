@@ -18,7 +18,6 @@
 
 package org.spacious_team.table_wrapper.excel;
 
-import org.spacious_team.table_wrapper.api.AbstractTable;
 import org.spacious_team.table_wrapper.api.AbstractTableFactory;
 import org.spacious_team.table_wrapper.api.ReportPage;
 import org.spacious_team.table_wrapper.api.Table;
@@ -30,38 +29,57 @@ public class ExcelTableFactory extends AbstractTableFactory<ExcelSheet> {
         super(ExcelSheet.class);
     }
 
-    public Table create(ReportPage reportPage, String tableName, String tableFooterString,
+    public Table create(ReportPage reportPage,
+                        String tableName,
+                        String lastRowString,
                         Class<? extends TableColumnDescription> headerDescription,
                         int headersRowCount) {
-        AbstractTable<?> table = new ExcelTable(cast(reportPage), tableName,
-                reportPage.getTableCellRange(tableName, headersRowCount, tableFooterString),
+        return new ExcelTable(cast(reportPage),
+                tableName,
+                reportPage.getTableCellRange(tableName, headersRowCount, lastRowString),
                 headerDescription,
                 headersRowCount);
-        table.setLastTableRowContainsTotalData(true);
-        return table;
     }
 
     @Override
-    public Table create(ReportPage reportPage, String tableName,
+    public Table create(ReportPage reportPage,
+                        String tableName,
                         Class<? extends TableColumnDescription> headerDescription,
                         int headersRowCount) {
-        AbstractTable<?> table = new ExcelTable(cast(reportPage), tableName,
+        return new ExcelTable(cast(reportPage),
+                tableName,
                 reportPage.getTableCellRange(tableName, headersRowCount),
                 headerDescription,
                 headersRowCount);
-        table.setLastTableRowContainsTotalData(false);
-        return table;
     }
 
     @Override
-    public Table createOfNoName(ReportPage reportPage, String madeUpTableName, String firstLineText,
+    public Table createNameless(ReportPage reportPage,
+                                String providedTableName,
+                                String firstRowString,
+                                String lastRowString,
                                 Class<? extends TableColumnDescription> headerDescription,
                                 int headersRowCount) {
-        AbstractTable<?> table = new ExcelTable(cast(reportPage), madeUpTableName,
-                getNoNameTableRange(reportPage, firstLineText, headersRowCount),
+        return new ExcelTable(cast(reportPage),
+                providedTableName,
+                reportPage.getTableCellRange(firstRowString, headersRowCount, lastRowString)
+                        .addRowsToTop(1),
                 headerDescription,
                 headersRowCount);
-        table.setLastTableRowContainsTotalData(false);
-        return table;
+    }
+
+
+    @Override
+    public Table createNameless(ReportPage reportPage,
+                                String providedTableName,
+                                String firstRowString,
+                                Class<? extends TableColumnDescription> headerDescription,
+                                int headersRowCount) {
+        return new ExcelTable(cast(reportPage),
+                providedTableName,
+                reportPage.getTableCellRange(firstRowString, headersRowCount)
+                        .addRowsToTop(1),
+                headerDescription,
+                headersRowCount);
     }
 }

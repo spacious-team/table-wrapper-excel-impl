@@ -53,7 +53,8 @@ public class ExcelTableRow extends AbstractReportPageRow {
 
     @Override
     public int getLastCellNum() {
-        return row.getLastCellNum();
+        short lastCellNum = row.getLastCellNum(); // Gets the index of the last cell contained in this row PLUS ONE
+        return (lastCellNum < 0) ? -1 : (lastCellNum - 1);
     }
 
     public boolean rowContains(Object value) {

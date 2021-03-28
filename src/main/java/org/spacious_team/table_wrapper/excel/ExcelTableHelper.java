@@ -46,7 +46,7 @@ class ExcelTableHelper {
         if (sheet.getLastRowNum() == -1) {
             return NOT_FOUND;
         } else if (endRow > sheet.getLastRowNum()) {
-            endRow = sheet.getLastRowNum();
+            endRow = sheet.getLastRowNum() + 1; // endRow is exclusive
         }
         CellType type = getType(value);
         if (type == CellType.NUMERIC) {
@@ -71,7 +71,7 @@ class ExcelTableHelper {
     }
 
     private static TableCellAddress findByPredicate(Sheet sheet, int startRow, Predicate<Cell> predicate) {
-        int endRow = sheet.getLastRowNum();
+        int endRow = sheet.getLastRowNum() + 1;
         for(int rowNum = startRow; rowNum < endRow; rowNum++) {
             Row row = sheet.getRow(rowNum);
             if (row == null) continue;
