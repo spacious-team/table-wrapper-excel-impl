@@ -24,7 +24,7 @@
 
     <groupId>org.spacious-team</groupId>
     <artifactId>table-wrapper-excel-impl</artifactId>
-    <version>2021.4</version>
+    <version>2021.5</version>
     <packaging>jar</packaging>
 
     <name>Table Wrapper API Excel Implementation</name>
