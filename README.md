@@ -5,15 +5,14 @@
 Предоставляет реализацию `Table Wrapper API` для удобного доступа к табличным данным, сохраненным в файлах формата
 Microsoft Office Excel (xls) и [Office Open XML](https://ru.wikipedia.org/wiki/Office_Open_XML) (xlsx).
 
-Пример создания фабрики таблиц
+Пример создания таблиц с первого листа файла `1.xlsx`
 ```java
 Workbook book = new XSSFWorkbook(Files.newInputStream(Path.of("1.xlsx")));
 ReportPage reportPage = new ExcelSheet(book.getSheetAt(0));
-TableFactory tableFactory = new ExcelTableFactory();
 
-Table table1 = tableFactory.create(reportPage, "Table 1 description", ...);
+Table table1 = reportPage.create("Table 1 description", ...);
 ...
-Table tableN = tableFactory.create(reportPage, "Table N description", ...);
+Table tableN = reportPage.create("Table N description", ...);
 ```
 Объекты `table`...`tableN` используются для удобного доступа к строкам и к значениям ячеек.
 
@@ -24,6 +23,14 @@ Table tableN = tableFactory.create(reportPage, "Table N description", ...);
 например для Apache Maven проекта
 ```xml
 <repositories>
+    <repository>
+        <id>central</id>
+        <name>Central Repository</name>
+        <url>https://repo.maven.apache.org/maven2</url>
+        <snapshots>
+            <enabled>false</enabled>
+        </snapshots>
+    </repository>
     <repository>
         <id>jitpack.io</id>
         <url>https://jitpack.io</url>

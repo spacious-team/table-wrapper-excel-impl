@@ -18,29 +18,19 @@
 
 package org.spacious_team.table_wrapper.excel;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.Cell;
-import org.spacious_team.table_wrapper.api.TableCell;
+import org.spacious_team.table_wrapper.api.AbstractTableCell;
 
-@RequiredArgsConstructor
-public class ExcelTableCell implements TableCell {
+import static org.spacious_team.table_wrapper.excel.ExcelCellDataAccessObject.INSTANCE;
 
-    @Getter
-    private final Cell cell;
+public class ExcelTableCell extends AbstractTableCell<Cell> {
+
+    public ExcelTableCell(Cell cell) {
+        super(cell, INSTANCE);
+    }
 
     @Override
     public int getColumnIndex() {
-        return cell.getColumnIndex();
-    }
-
-    @Override
-    public Object getValue() {
-        return ExcelTableHelper.getCellValue(cell);
-    }
-
-    @Override
-    public String getStringCellValue() {
-        return ExcelTableHelper.getStringCellValue(cell);
+        return getCell().getColumnIndex();
     }
 }

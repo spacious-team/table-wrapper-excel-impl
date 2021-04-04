@@ -18,18 +18,23 @@
 
 package org.spacious_team.table_wrapper.excel;
 
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.ToString;
-import org.apache.poi.ss.usermodel.Cell;
-import org.spacious_team.table_wrapper.api.*;
-
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.Date;
+import org.spacious_team.table_wrapper.api.AbstractReportPage;
+import org.spacious_team.table_wrapper.api.AbstractTable;
+import org.spacious_team.table_wrapper.api.CellDataAccessObject;
+import org.spacious_team.table_wrapper.api.Table;
+import org.spacious_team.table_wrapper.api.TableCellRange;
+import org.spacious_team.table_wrapper.api.TableColumnDescription;
 
 @ToString(callSuper = true)
-public class ExcelTable extends AbstractTable {
+public class ExcelTable extends AbstractTable<ExcelTableRow> {
 
-    ExcelTable(ReportPage reportPage,
+    @Getter(AccessLevel.PROTECTED)
+    private final CellDataAccessObject<?, ExcelTableRow> cellDataAccessObject = ExcelCellDataAccessObject.INSTANCE;
+
+    ExcelTable(AbstractReportPage<ExcelTableRow> reportPage,
                String tableName,
                TableCellRange tableRange,
                Class<? extends TableColumnDescription> headerDescription,
@@ -37,40 +42,12 @@ public class ExcelTable extends AbstractTable {
         super(reportPage, tableName, tableRange, headerDescription, headersRowCount);
     }
 
-    @Override
-    public Object getCellValue(TableRow row, TableColumnDescription columnDescription) {
-        return ExcelTableHelper.getCellValue(getRawCell(row, columnDescription));
+    ExcelTable(AbstractTable<ExcelTableRow> table, int appendDataRowsToTop, int appendDataRowsToBottom) {
+        super(table, appendDataRowsToTop, appendDataRowsToBottom);
     }
 
     @Override
-    public int getIntCellValue(TableRow row, TableColumnDescription columnDescription) {
-        return (int) getLongCellValue(row, columnDescription);
-    }
-
-    @Override
-    public long getLongCellValue(TableRow row, TableColumnDescription columnDescription) {
-        return ExcelTableHelper.getLongCellValue(getRawCell(row, columnDescription));
-    }
-
-    @Override
-    public BigDecimal getCurrencyCellValue(TableRow row, TableColumnDescription columnDescription) {
-        return ExcelTableHelper.getCurrencyCellValue(getRawCell(row, columnDescription));
-    }
-
-    @Override
-    public String getStringCellValue(TableRow row, TableColumnDescription columnDescription) {
-        return ExcelTableHelper.getStringCellValue(getRawCell(row, columnDescription));
-    }
-
-    public Date getDateCellValue(TableRow row, TableColumnDescription columnDescription) {
-        return getRawCell(row, columnDescription).getDateCellValue();
-    }
-
-    public LocalDateTime getLocalDateTimeCellValue(TableRow row, TableColumnDescription columnDescription) {
-        return getRawCell(row, columnDescription).getLocalDateTimeCellValue();
-    }
-
-    private Cell getRawCell(TableRow row, TableColumnDescription columnDescription) {
-        return ((ExcelTableRow) row).getRow().getCell(columnIndices.get(columnDescription.getColumn()));
+    public Table subTable(int topRows, int bottomRows) {
+        return new ExcelTable(this, topRows, bottomRows);
     }
 }

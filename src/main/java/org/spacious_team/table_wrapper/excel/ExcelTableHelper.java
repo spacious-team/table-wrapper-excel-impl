@@ -18,20 +18,19 @@
 
 package org.spacious_team.table_wrapper.excel;
 
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellAddress;
 import org.spacious_team.table_wrapper.api.TableCellAddress;
 
-import java.math.BigDecimal;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
-import java.util.regex.Pattern;
 
 import static org.spacious_team.table_wrapper.api.TableCellAddress.NOT_FOUND;
 
 class ExcelTableHelper {
-
-    private static final Pattern spacePattern = Pattern.compile("\\s");
 
     /**
      * @param value searching value
@@ -47,7 +46,7 @@ class ExcelTableHelper {
         if (sheet.getLastRowNum() == -1) {
             return NOT_FOUND;
         } else if (endRow > sheet.getLastRowNum()) {
-            endRow = sheet.getLastRowNum();
+            endRow = sheet.getLastRowNum() + 1; // endRow is exclusive
         }
         CellType type = getType(value);
         if (type == CellType.NUMERIC) {
@@ -72,7 +71,7 @@ class ExcelTableHelper {
     }
 
     private static TableCellAddress findByPredicate(Sheet sheet, int startRow, Predicate<Cell> predicate) {
-        int endRow = sheet.getLastRowNum();
+        int endRow = sheet.getLastRowNum() + 1;
         for(int rowNum = startRow; rowNum < endRow; rowNum++) {
             Row row = sheet.getRow(rowNum);
             if (row == null) continue;
@@ -110,62 +109,5 @@ class ExcelTableHelper {
             case BOOLEAN -> value.equals(cell.getBooleanCellValue());
             default -> false;
         };
-    }
-
-    static Object getCellValue(Cell cell) {
-        return switch (cell.getCellType()) {
-            case STRING -> cell.getStringCellValue();
-            case NUMERIC -> cell.getNumericCellValue(); // return double
-            case BLANK -> null;
-            case BOOLEAN -> cell.getBooleanCellValue();
-            case FORMULA -> getCachedFormulaValue(cell);
-            case ERROR -> throw new RuntimeException("Ячейка содержит ошибку вычисления формулы: " +
-                    FormulaError.forInt(cell.getErrorCellValue()));
-            case _NONE -> null;
-        };
-    }
-
-    private static Object getCachedFormulaValue(Cell cell) {
-        return switch (cell.getCachedFormulaResultType()) {
-            case BOOLEAN -> cell.getBooleanCellValue();
-            case NUMERIC -> cell.getNumericCellValue();
-            case STRING -> cell.getRichStringCellValue();
-            case ERROR -> throw new RuntimeException("Ячейка не содержит кешированный результат формулы: " +
-                    FormulaError.forInt(cell.getErrorCellValue()));
-            default -> null; //never should occur
-        };
-    }
-
-    /**
-     * @throws RuntimeException if can't extract long value
-     */
-    static long getLongCellValue(Cell cell) {
-        Object value = getCellValue(cell);
-        if (value instanceof Number) {
-            return ((Number) value).longValue();
-        } else {
-            return Long.parseLong(spacePattern.matcher(value.toString()).replaceAll(""));
-        }
-    }
-
-    /**
-     * @throws RuntimeException if can't extract BigDecimal value
-     */
-    static BigDecimal getCurrencyCellValue(Cell cell) {
-        Object cellValue = getCellValue(cell);
-        double number;
-        if (cellValue instanceof Number) {
-            number = ((Number) cellValue).doubleValue();
-        } else {
-            number = Double.parseDouble(spacePattern.matcher(cellValue.toString()).replaceAll(""));
-        }
-        return (Math.abs(number - 0.01d) < 0) ? BigDecimal.ZERO : BigDecimal.valueOf(number);
-    }
-
-    /**
-     * @throws RuntimeException if can't extract string value
-     */
-    static String getStringCellValue(Cell cell) {
-        return getCellValue(cell).toString();
     }
 }

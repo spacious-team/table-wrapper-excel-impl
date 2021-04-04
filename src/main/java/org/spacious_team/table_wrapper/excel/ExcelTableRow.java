@@ -22,8 +22,8 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import org.spacious_team.table_wrapper.api.AbstractReportPageRow;
 import org.spacious_team.table_wrapper.api.TableCell;
-import org.spacious_team.table_wrapper.api.TableRow;
 
 import java.util.Iterator;
 
@@ -31,7 +31,7 @@ import static org.spacious_team.table_wrapper.api.TableCellAddress.NOT_FOUND;
 
 
 @RequiredArgsConstructor
-public class ExcelTableRow extends TableRow {
+public class ExcelTableRow extends AbstractReportPageRow {
 
     @Getter
     private final Row row;
@@ -53,7 +53,8 @@ public class ExcelTableRow extends TableRow {
 
     @Override
     public int getLastCellNum() {
-        return row.getLastCellNum();
+        short lastCellNum = row.getLastCellNum(); // Gets the index of the last cell contained in this row PLUS ONE
+        return (lastCellNum < 0) ? -1 : (lastCellNum - 1);
     }
 
     public boolean rowContains(Object value) {
@@ -63,6 +64,6 @@ public class ExcelTableRow extends TableRow {
 
     @Override
     public Iterator<TableCell> iterator() {
-        return new TableRowIterator<>(row.iterator(), ExcelTableCell::new);
+        return new ReportPageRowIterator<>(row.iterator(), ExcelTableCell::new);
     }
 }
