@@ -38,7 +38,7 @@ class ExcelTableHelper {
      * @param endRow search rows excluding this, can handle values greater than real rows count
      * @param startColumn search columns start from this
      * @param endColumn search columns excluding this, can handle values greater than real columns count
-     * @return table table cell address or {@link TableCellAddress#NOT_FOUND}
+     * @return table cell address or {@link TableCellAddress#NOT_FOUND}
      */
     static TableCellAddress find(Sheet sheet, Object value, int startRow, int endRow,
                                  int startColumn, int endColumn,
