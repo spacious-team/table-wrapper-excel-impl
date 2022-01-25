@@ -48,6 +48,16 @@ public class ExcelCellDataAccessObject implements CellDataAccessObject<Cell, Exc
     }
 
     @Override
+    public String getStringValue(Cell cell) {
+        Object value = getValue(cell);
+        String strValue = value.toString();
+        if ((value instanceof Number) && strValue.endsWith(".0")) {
+            return strValue.substring(0, strValue.length() - 2);
+        }
+        return strValue;
+    }
+
+    @Override
     public Instant getInstantValue(Cell cell) {
         return cell.getDateCellValue().toInstant();
     }
