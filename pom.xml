@@ -24,7 +24,7 @@
 
     <groupId>org.spacious-team</groupId>
     <artifactId>table-wrapper-excel-impl</artifactId>
-    <version>2021.5</version>
+    <version>2022.2</version>
     <packaging>jar</packaging>
 
     <name>Table Wrapper API Excel Implementation</name>
@@ -86,7 +86,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.12</version>
+            <version>1.18.22</version>
             <scope>provided</scope>
             <optional>true</optional>
         </dependency>
