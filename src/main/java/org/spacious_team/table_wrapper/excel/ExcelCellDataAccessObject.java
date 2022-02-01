@@ -1,6 +1,6 @@
 /*
  * Table Wrapper Excel Impl
- * Copyright (C) 2021  Vitalii Ananev <an-vitek@ya.ru>
+ * Copyright (C) 2021  Vitalii Ananev <spacious-team@ya.ru>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -45,6 +45,16 @@ public class ExcelCellDataAccessObject implements CellDataAccessObject<Cell, Exc
                     FormulaError.forInt(cell.getErrorCellValue()));
             case _NONE -> null;
         };
+    }
+
+    @Override
+    public String getStringValue(Cell cell) {
+        Object value = getValue(cell);
+        String strValue = value.toString();
+        if ((value instanceof Number) && strValue.endsWith(".0")) {
+            return strValue.substring(0, strValue.length() - 2);
+        }
+        return strValue;
     }
 
     @Override

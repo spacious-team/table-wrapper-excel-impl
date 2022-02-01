@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~ Table Wrapper Excel Impl
-  ~ Copyright (C) 2020  Vitalii Ananev <an-vitek@ya.ru>
+  ~ Copyright (C) 2020  Vitalii Ananev <spacious-team@ya.ru>
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU Affero General Public License as
@@ -24,13 +24,13 @@
 
     <groupId>org.spacious-team</groupId>
     <artifactId>table-wrapper-excel-impl</artifactId>
-    <version>2021.4</version>
+    <version>2022.2</version>
     <packaging>jar</packaging>
 
     <name>Table Wrapper API Excel Implementation</name>
     <description>
         Implements unified Table Wrapper API for excel format and helps to
-        easily search and access to rows, columns, and cell values.
+        easily search and access to row, column, and cell value.
     </description>
     <url>https://github.com/spacious-team/table-wrapper-excel-impl</url>
 
@@ -71,7 +71,7 @@
         <dependency>
             <groupId>com.github.spacious-team</groupId>
             <artifactId>table-wrapper-api</artifactId>
-            <version>2021.4</version>
+            <version>2022.2</version>
         </dependency>
         <dependency>
             <groupId>org.apache.poi</groupId>
@@ -86,7 +86,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.12</version>
+            <version>1.18.22</version>
             <scope>provided</scope>
             <optional>true</optional>
         </dependency>
