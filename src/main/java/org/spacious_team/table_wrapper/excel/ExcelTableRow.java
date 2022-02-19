@@ -59,7 +59,7 @@ public class ExcelTableRow extends AbstractReportPageRow {
 
     public boolean rowContains(Object value) {
         return ExcelTableHelper.find(row.getSheet(), value, row.getRowNum(), row.getRowNum() + 1,
-                0, Integer.MAX_VALUE, String::equals) != NOT_FOUND;
+                0, Integer.MAX_VALUE) != NOT_FOUND;
     }
 
     @Override
