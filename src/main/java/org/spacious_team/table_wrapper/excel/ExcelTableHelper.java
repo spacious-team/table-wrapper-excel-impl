@@ -107,7 +107,7 @@ class ExcelTableHelper {
         return switch (cell.getCellType()) {
             case BLANK -> expected == null || expected.equals("");
             case STRING -> (expected instanceof CharSequence) && Objects.equals(cell.getStringCellValue(), expected.toString());
-            case NUMERIC -> (expected instanceof Number) && (cell.getNumericCellValue() - ((Number) expected).doubleValue()) < 1e-6;
+            case NUMERIC -> (expected instanceof Number) && Math.abs((cell.getNumericCellValue() - ((Number) expected).doubleValue())) < 1e-6;
             case BOOLEAN -> expected.equals(cell.getBooleanCellValue());
             default -> false;
         };
