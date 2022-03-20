@@ -71,7 +71,7 @@
         <dependency>
             <groupId>com.github.spacious-team</groupId>
             <artifactId>table-wrapper-api</artifactId>
-            <version>2022.2</version>
+            <version>7ff4a431fd</version>
         </dependency>
         <dependency>
             <groupId>org.apache.poi</groupId>

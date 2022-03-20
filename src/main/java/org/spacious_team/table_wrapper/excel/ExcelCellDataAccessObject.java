@@ -35,16 +35,7 @@ public class ExcelCellDataAccessObject implements CellDataAccessObject<Cell, Exc
 
     @Override
     public Object getValue(Cell cell) {
-        return switch (cell.getCellType()) {
-            case STRING -> cell.getStringCellValue();
-            case NUMERIC -> cell.getNumericCellValue(); // return double
-            case BLANK -> null;
-            case BOOLEAN -> cell.getBooleanCellValue();
-            case FORMULA -> getCachedFormulaValue(cell);
-            case ERROR -> throw new RuntimeException("Ячейка содержит ошибку вычисления формулы: " +
-                    FormulaError.forInt(cell.getErrorCellValue()));
-            case _NONE -> null;
-        };
+        return ExcelTableHelper.getValue(cell);
     }
 
     @Override
@@ -65,16 +56,5 @@ public class ExcelCellDataAccessObject implements CellDataAccessObject<Cell, Exc
     @Override
     public LocalDateTime getLocalDateTimeValue(Cell cell) {
         return cell.getLocalDateTimeCellValue();
-    }
-
-    private static Object getCachedFormulaValue(Cell cell) {
-        return switch (cell.getCachedFormulaResultType()) {
-            case BOOLEAN -> cell.getBooleanCellValue();
-            case NUMERIC -> cell.getNumericCellValue();
-            case STRING -> cell.getRichStringCellValue();
-            case ERROR -> throw new RuntimeException("Ячейка не содержит кешированный результат формулы: " +
-                    FormulaError.forInt(cell.getErrorCellValue()));
-            default -> null; //never should occur
-        };
     }
 }
