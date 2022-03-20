@@ -21,6 +21,7 @@ package org.spacious_team.table_wrapper.excel;
 import org.spacious_team.table_wrapper.api.AbstractTableFactory;
 import org.spacious_team.table_wrapper.api.ReportPage;
 import org.spacious_team.table_wrapper.api.Table;
+import org.spacious_team.table_wrapper.api.TableCellRange;
 import org.spacious_team.table_wrapper.api.TableColumnDescription;
 
 public class ExcelTableFactory extends AbstractTableFactory<ExcelSheet> {
@@ -29,56 +30,16 @@ public class ExcelTableFactory extends AbstractTableFactory<ExcelSheet> {
         super(ExcelSheet.class);
     }
 
-    public Table create(ReportPage reportPage,
-                        String tableName,
-                        String lastRowString,
-                        Class<? extends TableColumnDescription> headerDescription,
-                        int headersRowCount) {
-        return new ExcelTable(cast(reportPage),
-                tableName,
-                reportPage.getTableCellRange(tableName, headersRowCount, lastRowString),
-                headerDescription,
-                headersRowCount);
-    }
-
     @Override
     public Table create(ReportPage reportPage,
                         String tableName,
+                        TableCellRange tableRange,
                         Class<? extends TableColumnDescription> headerDescription,
                         int headersRowCount) {
-        return new ExcelTable(cast(reportPage),
+        return new ExcelTable(
+                cast(reportPage),
                 tableName,
-                reportPage.getTableCellRange(tableName, headersRowCount),
-                headerDescription,
-                headersRowCount);
-    }
-
-    @Override
-    public Table createNameless(ReportPage reportPage,
-                                String providedTableName,
-                                String firstRowString,
-                                String lastRowString,
-                                Class<? extends TableColumnDescription> headerDescription,
-                                int headersRowCount) {
-        return new ExcelTable(cast(reportPage),
-                providedTableName,
-                reportPage.getTableCellRange(firstRowString, headersRowCount, lastRowString)
-                        .addRowsToTop(1),
-                headerDescription,
-                headersRowCount);
-    }
-
-
-    @Override
-    public Table createNameless(ReportPage reportPage,
-                                String providedTableName,
-                                String firstRowString,
-                                Class<? extends TableColumnDescription> headerDescription,
-                                int headersRowCount) {
-        return new ExcelTable(cast(reportPage),
-                providedTableName,
-                reportPage.getTableCellRange(firstRowString, headersRowCount)
-                        .addRowsToTop(1),
+                tableRange,
                 headerDescription,
                 headersRowCount);
     }

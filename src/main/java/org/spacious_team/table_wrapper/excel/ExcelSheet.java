@@ -26,7 +26,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.spacious_team.table_wrapper.api.AbstractReportPage;
 import org.spacious_team.table_wrapper.api.TableCellAddress;
 
-import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 
 @RequiredArgsConstructor
 public class ExcelSheet extends AbstractReportPage<ExcelTableRow> {
@@ -35,9 +35,15 @@ public class ExcelSheet extends AbstractReportPage<ExcelTableRow> {
     private final Sheet sheet;
 
     @Override
-    public TableCellAddress find(Object value, int startRow, int endRow, int startColumn, int endColumn,
-                                 BiPredicate<String, Object> stringPredicate) {
-        return ExcelTableHelper.find(sheet, value, startRow, endRow, startColumn, endColumn, stringPredicate);
+    public TableCellAddress find(Object value, int startRow, int endRow, int startColumn, int endColumn) {
+        return ExcelTableHelper.find(sheet, value, startRow, endRow, startColumn, endColumn);
+    }
+
+    @Override
+    public TableCellAddress find(int startRow, int endRow, int startColumn, int endColumn,
+                                 Predicate<Object> cellValuePredicate) {
+        return ExcelTableHelper.find(sheet, startRow, endRow, startColumn, endColumn,
+                (cell) -> cellValuePredicate.test(ExcelTableHelper.getValue(cell)));
     }
 
     @Override
