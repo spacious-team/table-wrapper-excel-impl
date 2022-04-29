@@ -42,8 +42,22 @@
     </licenses>
 
     <scm>
+        <connection>scm:git:https://github.com/spacious-team/table-wrapper-excel-impl.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com:spacious-team/table-wrapper-excel-impl.git</developerConnection>
         <url>https://github.com/spacious-team/table-wrapper-excel-impl</url>
     </scm>
+
+    <issueManagement>
+        <url>https://github.com/spacious-team/table-wrapper-excel-impl/issues</url>
+    </issueManagement>
+
+    <developers>
+        <developer>
+            <organization>Spacious Team</organization>
+            <organizationUrl>https://github.com/spacious-team</organizationUrl>
+            <email>spacious-team@ya.ru</email>
+        </developer>
+    </developers>
 
     <properties>
         <maven.compiler.source>14</maven.compiler.source>
