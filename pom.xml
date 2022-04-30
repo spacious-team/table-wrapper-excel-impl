@@ -43,7 +43,7 @@
 
     <scm>
         <connection>scm:git:https://github.com/spacious-team/table-wrapper-excel-impl.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com:spacious-team/table-wrapper-excel-impl.git</developerConnection>
+        <developerConnection>scm:git:git@github.com:spacious-team/table-wrapper-excel-impl.git</developerConnection>
         <tag>master</tag>
         <url>https://github.com/spacious-team/table-wrapper-excel-impl</url>
     </scm>
