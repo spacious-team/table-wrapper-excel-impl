@@ -22,6 +22,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.FormulaError;
 import org.spacious_team.table_wrapper.api.CellDataAccessObject;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDateTime;
 
@@ -36,6 +37,12 @@ public class ExcelCellDataAccessObject implements CellDataAccessObject<Cell, Exc
     @Override
     public Object getValue(Cell cell) {
         return ExcelTableHelper.getValue(cell);
+    }
+
+    @Override
+    public BigDecimal getBigDecimalValue(Cell cell) {
+        double number = getDoubleValue(cell);
+        return (Double.compare(number, 0D) == 0) ? BigDecimal.ZERO : BigDecimal.valueOf(number);
     }
 
     @Override
