@@ -19,7 +19,6 @@
 package org.spacious_team.table_wrapper.excel;
 
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.FormulaError;
 import org.spacious_team.table_wrapper.api.CellDataAccessObject;
 
 import java.math.BigDecimal;
