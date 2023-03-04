@@ -5,6 +5,6 @@ before_install:
   - source install-jdk.sh --feature 14
   - jshell --version
 
-# Laster may be supported by
+# Later may be supported by
 #jdk:
 #  - openjdk14
