@@ -35,7 +35,7 @@ jobs:
       - name: SonarCloud Analyze
         run: >
           mvn --batch-mode sonar:sonar
-          -Dsonar.projectKey=spacious-team_table-wrapper-xml-impl
+          -Dsonar.projectKey=spacious-team_table-wrapper-excel-impl
           -Dsonar.organization=spacious-team
           -Dsonar.host.url=https://sonarcloud.io
           -Dsonar.login=$SONAR_TOKEN

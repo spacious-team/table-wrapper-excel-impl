@@ -50,7 +50,7 @@ public class ExcelSheet extends AbstractReportPage<ExcelTableRow> {
     @Override
     public @Nullable ExcelTableRow getRow(int i) {
         Row row = sheet.getRow(i);
-        return (row == null) ? null : new ExcelTableRow(row);
+        return (row == null) ? null : ExcelTableRow.of(row);
     }
 
     @Override

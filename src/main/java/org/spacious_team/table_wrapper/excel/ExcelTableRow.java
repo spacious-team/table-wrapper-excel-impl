@@ -32,7 +32,7 @@ import java.util.function.Function;
 import static org.spacious_team.table_wrapper.api.TableCellAddress.NOT_FOUND;
 
 
-@RequiredArgsConstructor
+@RequiredArgsConstructor(staticName = "of")
 public class ExcelTableRow extends AbstractReportPageRow {
 
     @Getter
