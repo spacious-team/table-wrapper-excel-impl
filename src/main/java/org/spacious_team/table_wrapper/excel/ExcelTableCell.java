@@ -23,14 +23,29 @@ import org.spacious_team.table_wrapper.api.AbstractTableCell;
 
 import static org.spacious_team.table_wrapper.excel.ExcelCellDataAccessObject.INSTANCE;
 
-public class ExcelTableCell extends AbstractTableCell<Cell> {
+public class ExcelTableCell extends AbstractTableCell<Cell, ExcelCellDataAccessObject> {
 
-    public ExcelTableCell(Cell cell) {
-        super(cell, INSTANCE);
+    @SuppressWarnings("unused")
+    public static ExcelTableCell of(Cell cell) {
+        return of(cell, INSTANCE);
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    public static ExcelTableCell of(Cell cell, ExcelCellDataAccessObject dao) {
+        return new ExcelTableCell(cell, dao);
+    }
+
+    private ExcelTableCell(Cell cell, ExcelCellDataAccessObject dao) {
+        super(cell, dao);
     }
 
     @Override
     public int getColumnIndex() {
         return getCell().getColumnIndex();
+    }
+
+    @Override
+    protected ExcelTableCell createWithCellDataAccessObject(ExcelCellDataAccessObject dao) {
+        return new ExcelTableCell(getCell(), dao);
     }
 }

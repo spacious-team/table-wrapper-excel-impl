@@ -21,28 +21,30 @@ package org.spacious_team.table_wrapper.excel;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.ToString;
+import org.apache.poi.ss.usermodel.Cell;
 import org.spacious_team.table_wrapper.api.AbstractReportPage;
 import org.spacious_team.table_wrapper.api.AbstractTable;
 import org.spacious_team.table_wrapper.api.CellDataAccessObject;
 import org.spacious_team.table_wrapper.api.Table;
 import org.spacious_team.table_wrapper.api.TableCellRange;
-import org.spacious_team.table_wrapper.api.TableColumnDescription;
+import org.spacious_team.table_wrapper.api.TableHeaderColumn;
 
 @ToString(callSuper = true)
-public class ExcelTable extends AbstractTable<ExcelTableRow> {
+public class ExcelTable extends AbstractTable<ExcelTableRow, Cell> {
 
-    @Getter(AccessLevel.PROTECTED)
-    private final CellDataAccessObject<?, ExcelTableRow> cellDataAccessObject = ExcelCellDataAccessObject.INSTANCE;
+    @Getter
+    private final CellDataAccessObject<Cell, ExcelTableRow> cellDataAccessObject = ExcelCellDataAccessObject.INSTANCE;
 
+    protected <T extends Enum<T> & TableHeaderColumn>
     ExcelTable(AbstractReportPage<ExcelTableRow> reportPage,
                String tableName,
                TableCellRange tableRange,
-               Class<? extends TableColumnDescription> headerDescription,
+               Class<T> headerDescription,
                int headersRowCount) {
         super(reportPage, tableName, tableRange, headerDescription, headersRowCount);
     }
 
-    ExcelTable(AbstractTable<ExcelTableRow> table, int appendDataRowsToTop, int appendDataRowsToBottom) {
+    ExcelTable(AbstractTable<ExcelTableRow, Cell> table, int appendDataRowsToTop, int appendDataRowsToBottom) {
         super(table, appendDataRowsToTop, appendDataRowsToBottom);
     }
 

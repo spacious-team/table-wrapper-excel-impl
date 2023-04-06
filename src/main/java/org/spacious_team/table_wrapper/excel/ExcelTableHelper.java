@@ -23,6 +23,7 @@ import org.apache.poi.ss.usermodel.FormulaError;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellAddress;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.spacious_team.table_wrapper.api.TableCellAddress;
 
 import java.util.Objects;
@@ -40,12 +41,15 @@ class ExcelTableHelper {
      * @param endColumn   search columns excluding this, can handle values greater than real columns count
      * @return table cell address or {@link TableCellAddress#NOT_FOUND}
      */
-    static TableCellAddress find(Sheet sheet, Object value,
+    static TableCellAddress find(Sheet sheet, @Nullable Object value,
                                  int startRow, int endRow,
                                  int startColumn, int endColumn) {
-        Object expected = (value instanceof Number) ?
-                ((Number) value).doubleValue() : // excel store Numbers as doubles
-                value;
+        @Nullable Object expected;
+        if (value instanceof Number) {
+            expected = ((Number) value).doubleValue();  // excel store Numbers as doubles
+        } else {
+            expected = value;
+        }
         return find(sheet, startRow, endRow, startColumn, endColumn, (cell) -> equals(cell, expected));
     }
 
@@ -64,13 +68,13 @@ class ExcelTableHelper {
         for (int rowNum = startRow; rowNum < endRow; rowNum++) {
             Row row = sheet.getRow(rowNum);
             if (row == null) continue;
-            for (Cell cell : row) {
+            for (@Nullable Cell cell : row) {
                 if (cell != null) {
                     int column = cell.getColumnIndex();
                     if (startColumn <= column && column < endColumn) {
                         if (predicate.test(cell)) {
                             CellAddress address = cell.getAddress();
-                            return new TableCellAddress(address.getRow(), address.getColumn());
+                            return TableCellAddress.of(address.getRow(), address.getColumn());
                         }
                     }
                 }
@@ -79,37 +83,57 @@ class ExcelTableHelper {
         return NOT_FOUND;
     }
 
-    static Object getValue(Cell cell) {
-        return switch (cell.getCellType()) {
-            case STRING -> cell.getStringCellValue();
-            case NUMERIC -> cell.getNumericCellValue(); // returns double
-            case BLANK -> null;
-            case BOOLEAN -> cell.getBooleanCellValue();
-            case FORMULA -> getCachedFormulaValue(cell);
-            case ERROR -> throw new RuntimeException("Ячейка содержит ошибку вычисления формулы: " +
-                    FormulaError.forInt(cell.getErrorCellValue()));
-            case _NONE -> null;
-        };
+    static @Nullable Object getValue(Cell cell) {
+        switch (cell.getCellType()) {
+            case STRING:
+                return cell.getStringCellValue();
+            case NUMERIC:
+                return cell.getNumericCellValue(); // returns double
+            case BOOLEAN:
+                return cell.getBooleanCellValue();
+            case FORMULA:
+                return getCachedFormulaValue(cell);
+            case ERROR:
+                throw new RuntimeException("Ячейка содержит ошибку вычисления формулы: " +
+                        FormulaError.forInt(cell.getErrorCellValue()));
+            case BLANK:
+            case _NONE:
+                return null;
+            default:
+                throw new RuntimeException("Unexpected cell type: " + cell.getCellType());
+        }
     }
 
-    private static Object getCachedFormulaValue(Cell cell) {
-        return switch (cell.getCachedFormulaResultType()) {
-            case BOOLEAN -> cell.getBooleanCellValue();
-            case NUMERIC -> cell.getNumericCellValue();
-            case STRING -> cell.getRichStringCellValue();
-            case ERROR -> throw new RuntimeException("Ячейка не содержит кешированный результат формулы: " +
-                    FormulaError.forInt(cell.getErrorCellValue()));
-            default -> null; // never should occur
-        };
+    private static @Nullable Object getCachedFormulaValue(Cell cell) {
+        switch (cell.getCachedFormulaResultType()) {
+            case BOOLEAN:
+                return cell.getBooleanCellValue();
+            case NUMERIC:
+                return cell.getNumericCellValue();
+            case STRING:
+                return cell.getRichStringCellValue();
+            case ERROR:
+                throw new RuntimeException("Ячейка не содержит кешированный результат формулы: " +
+                        FormulaError.forInt(cell.getErrorCellValue()));
+            default:
+                return null; // never should occur
+        }
     }
 
-    private static boolean equals(Cell cell, Object expected) {
-        return switch (cell.getCellType()) {
-            case BLANK -> expected == null || expected.equals("");
-            case STRING -> (expected instanceof CharSequence) && Objects.equals(cell.getStringCellValue(), expected.toString());
-            case NUMERIC -> (expected instanceof Number) && Math.abs((cell.getNumericCellValue() - ((Number) expected).doubleValue())) < 1e-6;
-            case BOOLEAN -> expected.equals(cell.getBooleanCellValue());
-            default -> false;
-        };
+    private static boolean equals(Cell cell, @Nullable Object expected) {
+        switch (cell.getCellType()) {
+            case BLANK:
+                return (expected == null) || Objects.equals(expected, "");
+            case STRING:
+                return (expected instanceof CharSequence) &&
+                        Objects.equals(cell.getStringCellValue(), String.valueOf(expected));
+            case NUMERIC:
+                return (expected instanceof Number) &&
+                        Math.abs((cell.getNumericCellValue() - ((Number) expected).doubleValue())) < 1e-6;
+            case BOOLEAN:
+                return Objects.equals(expected, cell.getBooleanCellValue());
+            default:
+                return false;
+        }
     }
 }

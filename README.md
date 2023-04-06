@@ -1,4 +1,4 @@
-![java-version](https://img.shields.io/badge/Java-14-brightgreen?style=flat-square)
+![java-version](https://img.shields.io/badge/Java-11-brightgreen?style=flat-square)
 ![jitpack-last-release](https://jitpack.io/v/spacious-team/table-wrapper-excel-impl.svg?style=flat-square)
 
 ### Назначение
