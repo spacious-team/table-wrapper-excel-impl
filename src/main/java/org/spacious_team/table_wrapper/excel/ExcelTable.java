@@ -18,8 +18,6 @@
 
 package org.spacious_team.table_wrapper.excel;
 
-import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.ToString;
 import org.apache.poi.ss.usermodel.Cell;
 import org.spacious_team.table_wrapper.api.AbstractReportPage;
@@ -31,9 +29,6 @@ import org.spacious_team.table_wrapper.api.TableHeaderColumn;
 
 @ToString(callSuper = true)
 public class ExcelTable extends AbstractTable<ExcelTableRow, Cell> {
-
-    @Getter
-    private final CellDataAccessObject<Cell, ExcelTableRow> cellDataAccessObject = ExcelCellDataAccessObject.INSTANCE;
 
     protected <T extends Enum<T> & TableHeaderColumn>
     ExcelTable(AbstractReportPage<ExcelTableRow> reportPage,
@@ -51,5 +46,10 @@ public class ExcelTable extends AbstractTable<ExcelTableRow, Cell> {
     @Override
     public Table subTable(int topRows, int bottomRows) {
         return new ExcelTable(this, topRows, bottomRows);
+    }
+
+    @Override
+    public CellDataAccessObject<Cell, ExcelTableRow> getCellDataAccessObject() {
+        return ExcelCellDataAccessObject.INSTANCE;
     }
 }

@@ -50,7 +50,7 @@ class ExcelTableHelper {
         } else {
             expected = value;
         }
-        return find(sheet, startRow, endRow, startColumn, endColumn, (cell) -> equals(cell, expected));
+        return find(sheet, startRow, endRow, startColumn, endColumn, cell -> equals(cell, expected));
     }
 
     /**
@@ -94,13 +94,13 @@ class ExcelTableHelper {
             case FORMULA:
                 return getCachedFormulaValue(cell);
             case ERROR:
-                throw new RuntimeException("Ячейка содержит ошибку вычисления формулы: " +
+                throw new ArithmeticException("Cell contains function evaluation error: " +
                         FormulaError.forInt(cell.getErrorCellValue()));
             case BLANK:
             case _NONE:
                 return null;
             default:
-                throw new RuntimeException("Unexpected cell type: " + cell.getCellType());
+                throw new UnsupportedOperationException("Unexpected cell type: " + cell.getCellType());
         }
     }
 
@@ -113,7 +113,7 @@ class ExcelTableHelper {
             case STRING:
                 return cell.getRichStringCellValue();
             case ERROR:
-                throw new RuntimeException("Ячейка не содержит кешированный результат формулы: " +
+                throw new ArithmeticException("Cell does not contain cached function result: " +
                         FormulaError.forInt(cell.getErrorCellValue()));
             default:
                 return null; // never should occur
