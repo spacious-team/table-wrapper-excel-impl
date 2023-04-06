@@ -2,8 +2,8 @@
 ![jitpack-last-release](https://jitpack.io/v/spacious-team/table-wrapper-excel-impl.svg?style=flat-square)
 [![Unit tests](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Fspacious-team%2Ftable-wrapper-excel-impl%2Fbadge%3Fref%3Ddevelop&style=flat-square&label=Test&logo=none)](
 https://github.com/spacious-team/table-wrapper-excel-impl/actions/workflows/unit-tests.yml)
-[![Coverage](https://img.shields.io/codecov/c/github/spacious-team/table-wrapper-excel-impl/develop?label=Coverage&style=flat-square&token=)](
-https://codecov.io/gh/spacious-team/table-wrapper-xml-impl)
+[![Coverage](https://img.shields.io/codecov/c/github/spacious-team/table-wrapper-excel-impl/develop?label=Coverage&style=flat-square&token=5DMBQMR6B0)](
+https://codecov.io/gh/spacious-team/table-wrapper-excel-impl)
 
 ### Назначение
 Предоставляет реализацию `Table Wrapper API` для удобного доступа к табличным данным, сохраненным в файлах формата
