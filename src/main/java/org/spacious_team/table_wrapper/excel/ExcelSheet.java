@@ -32,7 +32,6 @@ import java.util.function.Predicate;
 @RequiredArgsConstructor
 public class ExcelSheet extends AbstractReportPage<ExcelTableRow> {
 
-    @Getter
     private final Sheet sheet;
 
     @Override

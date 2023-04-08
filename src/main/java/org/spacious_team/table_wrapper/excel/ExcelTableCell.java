@@ -18,19 +18,21 @@
 
 package org.spacious_team.table_wrapper.excel;
 
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.apache.poi.ss.usermodel.Cell;
 import org.spacious_team.table_wrapper.api.AbstractTableCell;
 
 import static org.spacious_team.table_wrapper.excel.ExcelCellDataAccessObject.INSTANCE;
 
+@ToString
+@EqualsAndHashCode(callSuper = true)
 public class ExcelTableCell extends AbstractTableCell<Cell, ExcelCellDataAccessObject> {
 
-    @SuppressWarnings("unused")
     public static ExcelTableCell of(Cell cell) {
         return of(cell, INSTANCE);
     }
 
-    @SuppressWarnings("SameParameterValue")
     public static ExcelTableCell of(Cell cell, ExcelCellDataAccessObject dao) {
         return new ExcelTableCell(cell, dao);
     }
@@ -47,5 +49,11 @@ public class ExcelTableCell extends AbstractTableCell<Cell, ExcelCellDataAccessO
     @Override
     protected ExcelTableCell createWithCellDataAccessObject(ExcelCellDataAccessObject dao) {
         return new ExcelTableCell(getCell(), dao);
+    }
+
+    @SuppressWarnings("unused")
+    @ToString.Include(name = "value")
+    private String getCellData() {
+        return getStringValue();
     }
 }

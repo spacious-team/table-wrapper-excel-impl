@@ -18,6 +18,7 @@
 
 package org.spacious_team.table_wrapper.excel;
 
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.poi.ss.usermodel.Cell;
 import org.spacious_team.table_wrapper.api.AbstractReportPage;
@@ -28,6 +29,7 @@ import org.spacious_team.table_wrapper.api.TableCellRange;
 import org.spacious_team.table_wrapper.api.TableHeaderColumn;
 
 @ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 public class ExcelTable extends AbstractTable<ExcelTableRow, Cell> {
 
     protected <T extends Enum<T> & TableHeaderColumn>

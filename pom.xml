@@ -87,7 +87,7 @@
         <dependency>
             <groupId>com.github.spacious-team</groupId>
             <artifactId>table-wrapper-api</artifactId>
-            <version>5bf417e424</version>
+            <version>26e4fbf382</version>
         </dependency>
         <dependency>
             <groupId>org.apache.poi</groupId>
@@ -130,9 +130,23 @@
             <version>3.14.1</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.5</version>
+            <scope>test</scope> <!-- yes, for tests only -->
+        </dependency>
     </dependencies>
 
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.22.2</version> <!-- JUnit 5 requirement -->
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

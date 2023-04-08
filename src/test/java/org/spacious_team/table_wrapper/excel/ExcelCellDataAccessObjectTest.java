@@ -18,16 +18,26 @@
 
 package org.spacious_team.table_wrapper.excel;
 
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.util.Date;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
 class ExcelCellDataAccessObjectTest {
 
-    ExcelCellDataAccessObject dao = ExcelCellDataAccessObject.INSTANCE;
+    @Mock
+    Cell cell;
+    ExcelCellDataAccessObject dao = spy(ExcelCellDataAccessObject.INSTANCE);
 
     @Test
     void getCell() {
@@ -40,22 +50,41 @@ class ExcelCellDataAccessObjectTest {
     }
 
     @Test
-    void getValue() {
-    }
-
-    @Test
     void getBigDecimalValue() {
+        doReturn(1.1).when(dao).getDoubleValue(cell);
+
+        BigDecimal actual = dao.getBigDecimalValue(cell);
+
+        assertEquals(BigDecimal.valueOf(1.1), actual);
+        verify(dao).getDoubleValue(cell);
     }
 
     @Test
     void getStringValue() {
+        doReturn("test").when(dao).getValue(cell);
+        assertEquals("test", dao.getStringValue(cell));
+    }
+
+    @Test
+    void getStringValue_numericValue() {
+        doReturn(1.0).when(dao).getValue(cell);
+        assertEquals("1", dao.getStringValue(cell));
     }
 
     @Test
     void getInstantValue() {
+        Date date = new Date();
+        Instant expected = date.toInstant();
+        when(cell.getDateCellValue()).thenReturn(date);
+
+        assertEquals(expected, dao.getInstantValue(cell));
+
+        verify(cell).getDateCellValue();
     }
 
     @Test
     void getLocalDateTimeValue() {
+        dao.getLocalDateTimeValue(cell);
+        verify(cell).getLocalDateTimeCellValue();
     }
 }
