@@ -18,8 +18,11 @@
 
 package org.spacious_team.table_wrapper.excel;
 
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -31,11 +34,13 @@ import java.util.function.Function;
 
 import static org.spacious_team.table_wrapper.api.TableCellAddress.NOT_FOUND;
 
-
+@ToString
+@EqualsAndHashCode(callSuper = false)
 @RequiredArgsConstructor(staticName = "of")
 public class ExcelTableRow extends AbstractReportPageRow {
 
-    @Getter
+    @ToString.Exclude
+    @Getter(AccessLevel.PACKAGE)
     private final Row row;
 
     public @Nullable TableCell getCell(int i) {
@@ -44,16 +49,19 @@ public class ExcelTableRow extends AbstractReportPageRow {
     }
 
     @Override
+    @ToString.Include(name = "rowIndex")
     public int getRowNum() {
         return row.getRowNum();
     }
 
     @Override
+    @ToString.Include(name = "firsrColumnIndex")
     public int getFirstCellNum() {
         return row.getFirstCellNum();
     }
 
     @Override
+    @ToString.Include(name = "lastColumnIndex")
     public int getLastCellNum() {
         short lastCellNum = row.getLastCellNum(); // Gets the index of the last cell contained in this row PLUS ONE
         return (lastCellNum < 0) ? -1 : (lastCellNum - 1);

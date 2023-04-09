@@ -26,6 +26,10 @@ import org.apache.poi.ss.util.CellAddress;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.spacious_team.table_wrapper.api.TableCellAddress;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Objects;
 import java.util.function.Predicate;
 
@@ -121,19 +125,38 @@ class ExcelTableHelper {
     }
 
     private static boolean equals(Cell cell, @Nullable Object expected) {
-        switch (cell.getCellType()) {
-            case BLANK:
-                return (expected == null) || Objects.equals(expected, "");
-            case STRING:
-                return (expected instanceof CharSequence) &&
-                        Objects.equals(cell.getStringCellValue(), String.valueOf(expected));
-            case NUMERIC:
-                return (expected instanceof Number) &&
-                        Math.abs((cell.getNumericCellValue() - ((Number) expected).doubleValue())) < 1e-6;
-            case BOOLEAN:
-                return Objects.equals(expected, cell.getBooleanCellValue());
-            default:
-                return false;
+        try {
+            switch (cell.getCellType()) {
+                case BLANK:
+                    return (expected == null) || Objects.equals(expected, "");
+                case STRING:
+                    return (expected instanceof CharSequence) &&
+                            Objects.equals(cell.getStringCellValue(), String.valueOf(expected));
+                case NUMERIC:
+                    if (expected instanceof Number) {
+                        return Math.abs((cell.getNumericCellValue() - ((Number) expected).doubleValue())) < 1e-6;
+                    } else if (expected instanceof Instant) {
+                        Date date = cell.getDateCellValue();
+                        return (date != null) && Objects.equals(expected, date.toInstant());
+                    } else if (expected instanceof Date) {
+                        Date date = cell.getDateCellValue();
+                        return (date != null) && Objects.equals(expected, date);
+                    } else if (expected instanceof LocalDateTime) {
+                        LocalDateTime localDateTime = cell.getLocalDateTimeCellValue();
+                        return (localDateTime != null) && Objects.equals(expected, localDateTime);
+                    } else if (expected instanceof LocalDate) {
+                        LocalDate localDate = cell.getLocalDateTimeCellValue()
+                                .toLocalDate();
+                        return (localDate != null) && Objects.equals(expected, localDate);
+                    }
+                    return false;
+                case BOOLEAN:
+                    return Objects.equals(expected, cell.getBooleanCellValue());
+                default:
+                    return false;
+            }
+        } catch (Exception ignore) {
+            return false;
         }
     }
 }
