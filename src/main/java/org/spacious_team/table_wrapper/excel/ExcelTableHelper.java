@@ -19,6 +19,7 @@
 package org.spacious_team.table_wrapper.excel;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.FormulaError;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -115,7 +116,7 @@ class ExcelTableHelper {
             case NUMERIC:
                 return cell.getNumericCellValue();
             case STRING:
-                return cell.getRichStringCellValue();
+                return cell.getStringCellValue();
             case ERROR:
                 throw new ArithmeticException("Cell does not contain cached function result: " +
                         FormulaError.forInt(cell.getErrorCellValue()));
@@ -125,8 +126,12 @@ class ExcelTableHelper {
     }
 
     private static boolean equals(Cell cell, @Nullable Object expected) {
+        return equals(cell, cell.getCellType(), expected);
+    }
+
+    private static boolean equals(Cell cell, CellType cellType, @Nullable Object expected) {
         try {
-            switch (cell.getCellType()) {
+            switch (cellType) {
                 case BLANK:
                     return (expected == null) || Objects.equals(expected, "");
                 case STRING:
@@ -152,11 +157,11 @@ class ExcelTableHelper {
                     return false;
                 case BOOLEAN:
                     return Objects.equals(expected, cell.getBooleanCellValue());
-                default:
-                    return false;
+                case FORMULA:
+                    return equals(cell, cell.getCachedFormulaResultType(), expected);
             }
         } catch (Exception ignore) {
-            return false;
         }
+        return false;
     }
 }
