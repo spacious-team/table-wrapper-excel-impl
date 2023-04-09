@@ -136,7 +136,7 @@ class ExcelTableRowTest {
 
     @Test
     void rowContains() {
-        LocalDate localDate = LocalDate.of(2023, 4, 9);
+        LocalDate localDate = LocalDate.of(2023, 4, 8);
         LocalDateTime localDateTime = LocalDateTime.of(localDate, LocalTime.of(17, 36, 1));
         Instant instant = localDateTime.atZone(UTC)
                 .toInstant();
@@ -176,7 +176,7 @@ class ExcelTableRowTest {
 
     void createCells(LocalDate localDate, LocalDateTime localDateTime, Date date) {
         int i = 0;
-        wrappeeRow.createCell(i++);  // null value
+        wrappeeRow.createCell(i++);  // blank value
         wrappeeRow.createCell(i++).setCellValue("test");
         wrappeeRow.createCell(i++).setCellValue(true);
         wrappeeRow.createCell(i++).setCellValue(1);
@@ -224,6 +224,6 @@ class ExcelTableRowTest {
         wrappeeRow.createCell(0).setCellValue("test");
         wrappeeRow.createCell(1).setCellValue(1);
 
-        assertEquals("ExcelTableRow(rowIndex=10, firsrColumnIndex=0, lastColumnIndex=1)", row.toString());
+        assertEquals("ExcelTableRow(rowIndex=10, firstColumnIndex=0, lastColumnIndex=1)", row.toString());
     }
 }

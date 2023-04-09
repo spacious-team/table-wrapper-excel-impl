@@ -84,6 +84,22 @@ class ExcelTableHelperTest {
     }
 
     @Test
+    void find_null() {
+        sheet.createRow(0).createCell(0);
+
+        assertEquals(TableCellAddress.of(0, 0),
+                ExcelTableHelper.find(sheet, null, 0, 1, 0, 1));
+    }
+
+    @Test
+    void find_blank() {
+        sheet.createRow(0).createCell(0).setCellValue("");
+
+        assertEquals(TableCellAddress.of(0, 0),
+                ExcelTableHelper.find(sheet, "", 0, 1, 0, 1));
+    }
+
+    @Test
     void find_exceptionallyFormula() {
         Cell cell = sheet.createRow(0).createCell(0);
         cell.setCellFormula("10/0");

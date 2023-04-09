@@ -18,6 +18,7 @@
 
 package org.spacious_team.table_wrapper.excel;
 
+import lombok.NoArgsConstructor;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.FormulaError;
@@ -34,9 +35,11 @@ import java.util.Date;
 import java.util.Objects;
 import java.util.function.Predicate;
 
+import static lombok.AccessLevel.PRIVATE;
 import static org.spacious_team.table_wrapper.api.TableCellAddress.NOT_FOUND;
 
-class ExcelTableHelper {
+@NoArgsConstructor(access = PRIVATE)
+final class ExcelTableHelper {
 
     /**
      * @param value       searching value
@@ -141,18 +144,19 @@ class ExcelTableHelper {
                     if (expected instanceof Number) {
                         return Math.abs((cell.getNumericCellValue() - ((Number) expected).doubleValue())) < 1e-6;
                     } else if (expected instanceof Instant) {
-                        Date date = cell.getDateCellValue();
-                        return (date != null) && Objects.equals(expected, date.toInstant());
+                        Instant instant = cell.getDateCellValue()
+                                .toInstant();
+                        return Objects.equals(expected, instant);
                     } else if (expected instanceof Date) {
                         Date date = cell.getDateCellValue();
-                        return (date != null) && Objects.equals(expected, date);
+                        return Objects.equals(expected, date);
                     } else if (expected instanceof LocalDateTime) {
                         LocalDateTime localDateTime = cell.getLocalDateTimeCellValue();
-                        return (localDateTime != null) && Objects.equals(expected, localDateTime);
+                        return Objects.equals(expected, localDateTime);
                     } else if (expected instanceof LocalDate) {
                         LocalDate localDate = cell.getLocalDateTimeCellValue()
                                 .toLocalDate();
-                        return (localDate != null) && Objects.equals(expected, localDate);
+                        return Objects.equals(expected, localDate);
                     }
                     return false;
                 case BOOLEAN:

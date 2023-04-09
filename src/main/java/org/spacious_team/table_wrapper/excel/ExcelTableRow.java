@@ -55,7 +55,7 @@ public class ExcelTableRow extends AbstractReportPageRow {
     }
 
     @Override
-    @ToString.Include(name = "firsrColumnIndex")
+    @ToString.Include(name = "firstColumnIndex")
     public int getFirstCellNum() {
         return row.getFirstCellNum();
     }
