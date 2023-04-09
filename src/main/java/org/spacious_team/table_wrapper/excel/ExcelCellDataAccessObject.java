@@ -19,22 +19,25 @@
 package org.spacious_team.table_wrapper.excel;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.spacious_team.table_wrapper.api.CellDataAccessObject;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDateTime;
 
+import static java.util.Objects.requireNonNull;
+
 public class ExcelCellDataAccessObject implements CellDataAccessObject<Cell, ExcelTableRow> {
     public static final ExcelCellDataAccessObject INSTANCE = new ExcelCellDataAccessObject();
 
     @Override
-    public Cell getCell(ExcelTableRow row, Integer cellIndex) {
+    public @Nullable Cell getCell(ExcelTableRow row, Integer cellIndex) {
         return row.getRow().getCell(cellIndex);
     }
 
     @Override
-    public Object getValue(Cell cell) {
+    public @Nullable Object getValue(Cell cell) {
         return ExcelTableHelper.getValue(cell);
     }
 
@@ -46,7 +49,8 @@ public class ExcelCellDataAccessObject implements CellDataAccessObject<Cell, Exc
 
     @Override
     public String getStringValue(Cell cell) {
-        Object value = getValue(cell);
+        @SuppressWarnings({"nullness", "ConstantConditions"})
+        Object value = requireNonNull(getValue(cell), "Not a string");
         String strValue = value.toString();
         if ((value instanceof Number) && strValue.endsWith(".0")) {
             return strValue.substring(0, strValue.length() - 2);

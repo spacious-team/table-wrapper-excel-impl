@@ -22,7 +22,7 @@ import org.spacious_team.table_wrapper.api.AbstractTableFactory;
 import org.spacious_team.table_wrapper.api.ReportPage;
 import org.spacious_team.table_wrapper.api.Table;
 import org.spacious_team.table_wrapper.api.TableCellRange;
-import org.spacious_team.table_wrapper.api.TableColumnDescription;
+import org.spacious_team.table_wrapper.api.TableHeaderColumn;
 
 @SuppressWarnings("unused")
 public class ExcelTableFactory extends AbstractTableFactory<ExcelSheet> {
@@ -32,11 +32,12 @@ public class ExcelTableFactory extends AbstractTableFactory<ExcelSheet> {
     }
 
     @Override
-    public Table create(ReportPage reportPage,
-                        String tableName,
-                        TableCellRange tableRange,
-                        Class<? extends TableColumnDescription> headerDescription,
-                        int headersRowCount) {
+    public <T extends Enum<T> & TableHeaderColumn>
+    Table create(ReportPage reportPage,
+                 String tableName,
+                 TableCellRange tableRange,
+                 Class<T> headerDescription,
+                 int headersRowCount) {
         return new ExcelTable(
                 cast(reportPage),
                 tableName,

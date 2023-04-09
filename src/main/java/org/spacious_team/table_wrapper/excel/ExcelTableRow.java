@@ -18,52 +18,64 @@
 
 package org.spacious_team.table_wrapper.excel;
 
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.spacious_team.table_wrapper.api.AbstractReportPageRow;
 import org.spacious_team.table_wrapper.api.TableCell;
 
 import java.util.Iterator;
+import java.util.function.Function;
 
 import static org.spacious_team.table_wrapper.api.TableCellAddress.NOT_FOUND;
 
-
-@RequiredArgsConstructor
+@ToString
+@EqualsAndHashCode(callSuper = false)
+@RequiredArgsConstructor(staticName = "of")
 public class ExcelTableRow extends AbstractReportPageRow {
 
-    @Getter
+    @ToString.Exclude
+    @Getter(AccessLevel.PACKAGE)
     private final Row row;
 
-    public TableCell getCell(int i) {
+    public @Nullable TableCell getCell(int i) {
         Cell cell = row.getCell(i);
-        return (cell == null) ? null : new ExcelTableCell(cell);
+        return (cell == null) ? null : ExcelTableCell.of(cell);
     }
 
     @Override
+    @ToString.Include(name = "rowIndex")
     public int getRowNum() {
         return row.getRowNum();
     }
 
     @Override
+    @ToString.Include(name = "firstColumnIndex")
     public int getFirstCellNum() {
         return row.getFirstCellNum();
     }
 
     @Override
+    @ToString.Include(name = "lastColumnIndex")
     public int getLastCellNum() {
         short lastCellNum = row.getLastCellNum(); // Gets the index of the last cell contained in this row PLUS ONE
         return (lastCellNum < 0) ? -1 : (lastCellNum - 1);
     }
 
-    public boolean rowContains(Object value) {
+    public boolean rowContains(@Nullable Object value) {
         return ExcelTableHelper.find(row.getSheet(), value, row.getRowNum(), row.getRowNum() + 1,
                 0, Integer.MAX_VALUE) != NOT_FOUND;
     }
 
     @Override
-    public Iterator<TableCell> iterator() {
-        return new ReportPageRowIterator<>(row.iterator(), ExcelTableCell::new);
+    public Iterator<@Nullable TableCell> iterator() {
+        Function<@Nullable Cell, @Nullable TableCell> converter =
+                cell -> (cell == null) ? null : ExcelTableCell.of(cell);
+        return new ReportPageRowIterator<>(row.iterator(), converter);
     }
 }
