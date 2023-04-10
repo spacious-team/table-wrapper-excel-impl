@@ -9,6 +9,11 @@ https://codecov.io/gh/spacious-team/table-wrapper-excel-impl)
 Предоставляет реализацию `Table Wrapper API` для удобного доступа к табличным данным, сохраненным в файлах формата
 Microsoft Office Excel (xls) и [Office Open XML](https://ru.wikipedia.org/wiki/Office_Open_XML) (xlsx).
 
+Если не используется Spring Boot Starter, то сначала в реестр доступных фабрик нужно зарегистрировать фабрику excel таблиц:
+```java
+TableFactoryRegistry.add(new ExcelTableFactory());
+```
+
 Пример создания таблиц с первого листа файла `1.xlsx`
 ```java
 Workbook book = new XSSFWorkbook(Files.newInputStream(Path.of("1.xlsx")));
