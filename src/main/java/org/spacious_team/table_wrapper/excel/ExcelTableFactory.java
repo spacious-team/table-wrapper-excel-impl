@@ -18,12 +18,14 @@
 
 package org.spacious_team.table_wrapper.excel;
 
+import lombok.ToString;
 import org.spacious_team.table_wrapper.api.AbstractTableFactory;
 import org.spacious_team.table_wrapper.api.ReportPage;
 import org.spacious_team.table_wrapper.api.Table;
 import org.spacious_team.table_wrapper.api.TableCellRange;
 import org.spacious_team.table_wrapper.api.TableHeaderColumn;
 
+@ToString(callSuper = true)
 @SuppressWarnings("unused")
 public class ExcelTableFactory extends AbstractTableFactory<ExcelSheet> {
 
