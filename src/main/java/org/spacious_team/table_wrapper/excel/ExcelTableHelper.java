@@ -163,9 +163,11 @@ final class ExcelTableHelper {
                     return Objects.equals(expected, cell.getBooleanCellValue());
                 case FORMULA:
                     return equals(cell, cell.getCachedFormulaResultType(), expected);
+                default:
+                    return false;
             }
         } catch (Exception ignore) {
+            return false;
         }
-        return false;
     }
 }
