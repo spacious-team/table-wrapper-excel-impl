@@ -1,7 +1,6 @@
 target/
 .mvn
 !.mvn/wrapper/maven-wrapper.properties
-!.mvn/wrapper/MavenWrapperDownloader.java
 !**/src/main/**
 !**/src/test/**
 
@@ -22,6 +21,7 @@ target/
 !.idea/runConfigurations
 !.idea/codeStyles
 !.idea/copyright
+!.idea/inspectionProfiles
 
 ### NetBeans ###
 /nbproject/private/

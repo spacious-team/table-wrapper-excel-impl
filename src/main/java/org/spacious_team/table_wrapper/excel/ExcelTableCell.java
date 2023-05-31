@@ -1,6 +1,6 @@
 /*
  * Table Wrapper Excel Impl
- * Copyright (C) 2020  Vitalii Ananev <spacious-team@ya.ru>
+ * Copyright (C) 2020  Spacious Team <spacious-team@ya.ru>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -18,19 +18,42 @@
 
 package org.spacious_team.table_wrapper.excel;
 
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.apache.poi.ss.usermodel.Cell;
 import org.spacious_team.table_wrapper.api.AbstractTableCell;
 
 import static org.spacious_team.table_wrapper.excel.ExcelCellDataAccessObject.INSTANCE;
 
-public class ExcelTableCell extends AbstractTableCell<Cell> {
+@ToString
+@EqualsAndHashCode(callSuper = true)
+public class ExcelTableCell extends AbstractTableCell<Cell, ExcelCellDataAccessObject> {
 
-    public ExcelTableCell(Cell cell) {
-        super(cell, INSTANCE);
+    public static ExcelTableCell of(Cell cell) {
+        return of(cell, INSTANCE);
+    }
+
+    public static ExcelTableCell of(Cell cell, ExcelCellDataAccessObject dao) {
+        return new ExcelTableCell(cell, dao);
+    }
+
+    private ExcelTableCell(Cell cell, ExcelCellDataAccessObject dao) {
+        super(cell, dao);
     }
 
     @Override
     public int getColumnIndex() {
         return getCell().getColumnIndex();
+    }
+
+    @Override
+    protected ExcelTableCell createWithCellDataAccessObject(ExcelCellDataAccessObject dao) {
+        return new ExcelTableCell(getCell(), dao);
+    }
+
+    @SuppressWarnings("unused")
+    @ToString.Include(name = "value")
+    private String getCellData() {
+        return getStringValue();
     }
 }

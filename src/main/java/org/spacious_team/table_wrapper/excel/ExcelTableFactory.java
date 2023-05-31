@@ -1,6 +1,6 @@
 /*
  * Table Wrapper Excel Impl
- * Copyright (C) 2020  Vitalii Ananev <spacious-team@ya.ru>
+ * Copyright (C) 2020  Spacious Team <spacious-team@ya.ru>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -18,12 +18,15 @@
 
 package org.spacious_team.table_wrapper.excel;
 
+import lombok.ToString;
 import org.spacious_team.table_wrapper.api.AbstractTableFactory;
 import org.spacious_team.table_wrapper.api.ReportPage;
 import org.spacious_team.table_wrapper.api.Table;
 import org.spacious_team.table_wrapper.api.TableCellRange;
-import org.spacious_team.table_wrapper.api.TableColumnDescription;
+import org.spacious_team.table_wrapper.api.TableHeaderColumn;
 
+@ToString(callSuper = true)
+@SuppressWarnings("unused")
 public class ExcelTableFactory extends AbstractTableFactory<ExcelSheet> {
 
     public ExcelTableFactory() {
@@ -31,11 +34,12 @@ public class ExcelTableFactory extends AbstractTableFactory<ExcelSheet> {
     }
 
     @Override
-    public Table create(ReportPage reportPage,
-                        String tableName,
-                        TableCellRange tableRange,
-                        Class<? extends TableColumnDescription> headerDescription,
-                        int headersRowCount) {
+    public <T extends Enum<T> & TableHeaderColumn>
+    Table create(ReportPage reportPage,
+                 String tableName,
+                 TableCellRange tableRange,
+                 Class<T> headerDescription,
+                 int headersRowCount) {
         return new ExcelTable(
                 cast(reportPage),
                 tableName,

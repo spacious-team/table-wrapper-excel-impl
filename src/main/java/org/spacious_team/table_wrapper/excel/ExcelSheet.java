@@ -1,6 +1,6 @@
 /*
  * Table Wrapper Excel Impl
- * Copyright (C) 2020  Vitalii Ananev <spacious-team@ya.ru>
+ * Copyright (C) 2020  Spacious Team <spacious-team@ya.ru>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -23,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.spacious_team.table_wrapper.api.AbstractReportPage;
 import org.spacious_team.table_wrapper.api.TableCellAddress;
 
@@ -41,15 +42,15 @@ public class ExcelSheet extends AbstractReportPage<ExcelTableRow> {
 
     @Override
     public TableCellAddress find(int startRow, int endRow, int startColumn, int endColumn,
-                                 Predicate<Object> cellValuePredicate) {
+                                 Predicate<@Nullable Object> cellValuePredicate) {
         return ExcelTableHelper.find(sheet, startRow, endRow, startColumn, endColumn,
-                (cell) -> cellValuePredicate.test(ExcelTableHelper.getValue(cell)));
+                cell -> cellValuePredicate.test(ExcelTableHelper.getValue(cell)));
     }
 
     @Override
-    public ExcelTableRow getRow(int i) {
+    public @Nullable ExcelTableRow getRow(int i) {
         Row row = sheet.getRow(i);
-        return (row == null) ? null : new ExcelTableRow(row);
+        return (row == null) ? null : ExcelTableRow.of(row);
     }
 
     @Override
@@ -64,22 +65,24 @@ public class ExcelSheet extends AbstractReportPage<ExcelTableRow> {
     @Override
     public int findEmptyRow(int startRow) {
         int lastRowNum = startRow;
-        LAST_ROW:
         for (int n = getLastRowNum(); lastRowNum <= n; lastRowNum++) {
             Row row = sheet.getRow(lastRowNum);
             if (row == null || row.getLastCellNum() == -1) {
-                return lastRowNum; // all row cells blank
+                return lastRowNum;  // all row cells blank
             }
-            for (Cell cell : row) {
-                Object value;
+            boolean isEmptyRow = true;
+            for (@Nullable Cell cell : row) {
+                @Nullable Object value;
                 if (!(cell == null
                         || ((value = ExcelCellDataAccessObject.INSTANCE.getValue(cell)) == null)
                         || (value instanceof String) && (value.toString().isEmpty()))) {
-                    // not empty
-                    continue LAST_ROW;
+                    isEmptyRow = false;
+                    break;
                 }
             }
-            return lastRowNum; // all row cells blank
+            if (isEmptyRow) {
+                return lastRowNum;  // all row cells blank
+            }
         }
         return -1;
     }
