@@ -29,7 +29,7 @@
 
     <name>Table Wrapper API Excel Implementation</name>
     <description>
-        Implements unified Table Wrapper API for excel format and helps to
+        Implements unified Table Wrapper API for Excel format and helps to
         easily search and access to row, column, and cell value.
     </description>
     <url>https://github.com/spacious-team/table-wrapper-excel-impl</url>
@@ -64,9 +64,9 @@
         <maven.compiler.release>11</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <lombok.version>1.18.28</lombok.version>
-        <checkerframework.version>3.32.0</checkerframework.version>
-        <apache-poi.version>5.2.3</apache-poi.version>
+        <lombok.version>1.18.32</lombok.version>
+        <checkerframework.version>3.42.0</checkerframework.version>
+        <apache-poi.version>5.2.5</apache-poi.version>
     </properties>
 
     <repositories>
@@ -83,6 +83,17 @@
             <url>https://jitpack.io</url>
         </repository>
     </repositories>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- org.apache.poi:poi-ooxml vulnerability fix https://devhub.checkmarx.com/cve-details/CVE-2024-26308/ -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-compress</artifactId>
+                <version>1.26.1</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <dependency>
