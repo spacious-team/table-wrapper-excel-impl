@@ -24,7 +24,7 @@
 
     <groupId>org.spacious-team</groupId>
     <artifactId>table-wrapper-excel-impl</artifactId>
-    <version>2024.1</version>
+    <version>2025.1</version>
     <packaging>jar</packaging>
 
     <name>Table Wrapper API Excel Implementation</name>
@@ -64,9 +64,9 @@
         <maven.compiler.release>11</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <lombok.version>1.18.32</lombok.version>
-        <checkerframework.version>3.42.0</checkerframework.version>
-        <apache-poi.version>5.2.5</apache-poi.version>
+        <lombok.version>1.18.38</lombok.version>
+        <checkerframework.version>3.49.3</checkerframework.version>
+        <apache-poi.version>5.4.1</apache-poi.version>
     </properties>
 
     <repositories>
@@ -88,7 +88,7 @@
         <dependency>
             <groupId>com.github.spacious-team</groupId>
             <artifactId>table-wrapper-api</artifactId>
-            <version>2023.1</version>
+            <version>2025.1</version>
         </dependency>
         <dependency>
             <groupId>org.apache.poi</groupId>
@@ -99,13 +99,6 @@
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
             <version>${apache-poi.version}</version>
-        </dependency>
-        <!-- org.apache.poi:poi-ooxml vulnerability fix https://devhub.checkmarx.com/cve-details/CVE-2024-26308/ -->
-        <!-- Remove after poi-ooxml update -->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-compress</artifactId>
-            <version>1.26.1</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -123,25 +116,25 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>5.9.2</version>
+            <version>5.12.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
-            <version>5.2.0</version>
+            <version>5.18.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>nl.jqno.equalsverifier</groupId>
             <artifactId>equalsverifier</artifactId>
-            <version>3.14.1</version>
+            <version>4.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>2.0.7</version>
+            <version>2.0.17</version>
             <scope>test</scope> <!-- yes, for tests only -->
         </dependency>
     </dependencies>
@@ -151,7 +144,7 @@
             <plugins>
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.22.2</version> <!-- JUnit 5 requirement -->
+                    <version>3.5.3</version> <!-- JUnit 5 requirement -->
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -159,7 +152,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.10.1</version>
+                <version>3.14.0</version>
                 <configuration>
                     <fork>true</fork> <!-- Must fork or else JVM arguments are ignored. -->
                     <showDeprecation>true</showDeprecation>
@@ -202,7 +195,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.8</version>
+                <version>0.8.13</version>
                 <executions>
                     <execution>
                         <id>prepare-agent</id>
@@ -222,7 +215,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.2.1</version>
+                <version>3.3.1</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
