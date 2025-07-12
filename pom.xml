@@ -65,7 +65,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <lombok.version>1.18.38</lombok.version>
-        <checkerframework.version>3.49.3</checkerframework.version>
+        <checkerframework.version>3.49.5</checkerframework.version>
         <apache-poi.version>5.4.1</apache-poi.version>
     </properties>
 
@@ -116,7 +116,7 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>5.12.2</version>
+            <version>5.13.3</version>
             <scope>test</scope>
         </dependency>
         <dependency>
