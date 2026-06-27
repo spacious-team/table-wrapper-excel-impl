@@ -42,7 +42,7 @@ class ExcelTableTest {
         //noinspection unchecked
         AbstractReportPage<ExcelTableRow> reportPage = mock(AbstractReportPage.class);
         //noinspection ConstantConditions
-        when(reportPage.getRow(tableRange.getFirstRow() + 1)).thenReturn(mock(ExcelTableRow.class)); // header row
+        when(reportPage.getRow(tableRange.getFirstRow())).thenReturn(mock(ExcelTableRow.class)); // header row
         excelTable = new ExcelTable(reportPage, "table name", tableRange, TableHeader.class, 1);
     }
 

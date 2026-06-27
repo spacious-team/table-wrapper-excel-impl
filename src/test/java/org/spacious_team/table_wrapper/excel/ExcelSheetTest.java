@@ -24,13 +24,14 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
+import org.spacious_team.table_wrapper.api.EmptyRowPredicate;
 import org.spacious_team.table_wrapper.api.TableCellAddress;
 
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.*;
 
 class ExcelSheetTest {
 
@@ -102,11 +103,31 @@ class ExcelSheetTest {
     }
 
     @Test
+    void findRow_emptyRowPredicate_callOptimizedMethod() {
+        Sheet sheet = workbook.createSheet();
+        ExcelSheet reportPage = spy(new ExcelSheet(sheet));
+
+        reportPage.findRow(0, 1, EmptyRowPredicate.INSTANCE);
+
+        verify(reportPage).findEmptyRow(0, 1);
+    }
+
+    @Test
+    void findRow_otherPredicate_callOriginalMethod() {
+        Sheet sheet = workbook.createSheet();
+        ExcelSheet reportPage = spy(new ExcelSheet(sheet));
+
+        reportPage.findRow(0, 1, row -> true);
+
+        verify(reportPage, never()).findEmptyRow(anyInt(), anyInt());
+    }
+
+    @Test
     void findEmptyRow_noEmpty() {
         Sheet sheet = getTestSheet();
         ExcelSheet reportPage = new ExcelSheet(sheet);
 
-        assertEquals(-1, reportPage.findEmptyRow(0));
+        assertEquals(-1, reportPage.findEmptyRow(0, Integer.MAX_VALUE));
     }
 
     @Test
@@ -114,7 +135,7 @@ class ExcelSheetTest {
         Sheet sheet = workbook.createSheet();
         ExcelSheet reportPage = new ExcelSheet(sheet);
 
-        assertEquals(-1, reportPage.findEmptyRow(0));
+        assertEquals(-1, reportPage.findEmptyRow(0, Integer.MAX_VALUE));
     }
 
     @Test
@@ -123,7 +144,7 @@ class ExcelSheetTest {
         sheet.createRow(0);
         ExcelSheet reportPage = new ExcelSheet(sheet);
 
-        assertEquals(0, reportPage.findEmptyRow(0));
+        assertEquals(0, reportPage.findEmptyRow(0, Integer.MAX_VALUE));
     }
 
     @Test
@@ -133,7 +154,7 @@ class ExcelSheetTest {
         sheet.createRow(2).createCell(1).setCellValue("");
         ExcelSheet reportPage = new ExcelSheet(sheet);
 
-        assertEquals(2, reportPage.findEmptyRow(0));
+        assertEquals(2, reportPage.findEmptyRow(0, Integer.MAX_VALUE));
     }
 
     Sheet getTestSheet() {
