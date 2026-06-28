@@ -131,6 +131,14 @@ class ExcelSheetTest {
     }
 
     @Test
+    void findEmptyRow_limitEnd_noEmpty() {
+        Sheet sheet = getTestSheet();
+        ExcelSheet reportPage = new ExcelSheet(sheet);
+
+        assertEquals(-1, reportPage.findEmptyRow(0, 1));
+    }
+
+    @Test
     void findEmptyRow_onEmptySheet() {
         Sheet sheet = workbook.createSheet();
         ExcelSheet reportPage = new ExcelSheet(sheet);
@@ -148,10 +156,19 @@ class ExcelSheetTest {
     }
 
     @Test
-    void findEmptyRow() {
+    void findEmptyRow_allCellsAreEmpty() {
         Sheet sheet = getTestSheet();
-        sheet.createRow(2).createCell(0).setCellValue("");
-        sheet.createRow(2).createCell(1).setCellValue("");
+        sheet.createRow(2).createCell(0).setCellValue((String) null);
+        sheet.getRow(2).createCell(1).setCellValue("");
+        ExcelSheet reportPage = new ExcelSheet(sheet);
+
+        assertEquals(2, reportPage.findEmptyRow(0, Integer.MAX_VALUE));
+    }
+
+    @Test
+    void findEmptyRow_row2IsNull() {
+        Sheet sheet = getTestSheet();
+        sheet.createRow(3).createCell(0).setCellValue("");
         ExcelSheet reportPage = new ExcelSheet(sheet);
 
         assertEquals(2, reportPage.findEmptyRow(0, Integer.MAX_VALUE));
@@ -160,9 +177,9 @@ class ExcelSheetTest {
     Sheet getTestSheet() {
         Sheet sheet = workbook.createSheet();
         sheet.createRow(0).createCell(0).setCellValue("11");
-        sheet.createRow(0).createCell(1).setCellValue("12");
-        sheet.createRow(1).createCell(0).setCellValue("21");
-        sheet.createRow(1).createCell(1).setCellValue("22");
+        sheet.getRow(0).createCell(1).setCellValue("12");
+        sheet.createRow(1).createCell(0).setCellValue(21);
+        sheet.getRow(1).createCell(1).setCellValue("22");
         return sheet;
     }
 }

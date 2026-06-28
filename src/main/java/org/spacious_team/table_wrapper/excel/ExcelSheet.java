@@ -78,20 +78,20 @@ public class ExcelSheet extends AbstractReportPage<ExcelTableRow> {
         for (int n = getLastRowNum(); lastRowNum <= n && lastRowNum < endRow; lastRowNum++) {
             Row row = sheet.getRow(lastRowNum);
             if (row == null || row.getLastCellNum() == -1) {
-                return lastRowNum;  // all row cells blank
+                return lastRowNum;  // all row cells are blank
             }
             boolean isEmptyRow = true;
             for (@Nullable Cell cell : row) {
                 @Nullable Object value;
                 if (!(cell == null
                         || ((value = ExcelCellDataAccessObject.INSTANCE.getValue(cell)) == null)
-                        || (value instanceof String) && (value.toString().isEmpty()))) {
+                        || ((value instanceof String) && (value.toString().isEmpty())))) {
                     isEmptyRow = false;
                     break;
                 }
             }
             if (isEmptyRow) {
-                return lastRowNum;  // all row cells blank
+                return lastRowNum;  // all row cells are blank
             }
         }
         return -1;
