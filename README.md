@@ -20,9 +20,9 @@ TableFactoryRegistry.add(new ExcelTableFactory());
 Workbook book = new XSSFWorkbook(Files.newInputStream(Path.of("1.xlsx")));
 ReportPage reportPage = new ExcelSheet(book.getSheetAt(0));
 
-Table table1 = reportPage.create("Table 1 description", ...);
+Table table1 = reportPage.createTable("Table 1 description", ...);
 ...
-Table tableN = reportPage.create("Table N description", ...);
+Table tableN = reportPage.createTable("Table N description", ...);
 ```
 Объекты `table`...`tableN` используются для удобного доступа к строкам и к значениям ячеек.
 
